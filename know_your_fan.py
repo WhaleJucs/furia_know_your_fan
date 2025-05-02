@@ -17,6 +17,21 @@ st.subheader("Upload de Documento (Opcional)")
 documento = st.file_uploader("Faça o upload de um documento (ex: RG)")
 if documento is not None:
     st.write("Documento carregado:", documento.name)
+    if st.button("Simular Validação do Documento"):
+        # Lógica de validação IA para o documento,
+        # como verificar o tipo do arquivo (se permitido) ou exibir mensagens diferentes.
+        st.success("Documento validado com sucesso (simulação)!")
+
+st.subheader("Vincular Redes Sociais (Simulação)")
+redes_sociais = ["Twitter", "Instagram", "Twitch"]
+rede_selecionada = st.selectbox("Selecione a rede social para vincular:", redes_sociais)
+if st.button(f"Simular Leitura de Dados do {rede_selecionada}"):
+    st.info(f"Simulando a leitura de interações, páginas seguidas e atividades relacionadas a esports da sua conta de {rede_selecionada}...")
+    # Aqui você poderia adicionar informações simuladas diferentes dependendo da rede selecionada.
+    st.write("Informações simuladas:")
+    st.write(f"- Número de interações recentes relacionadas à FURIA: [Número Aleatório]")
+    st.write(f"- Páginas de esports seguidas: [Lista de Páginas Simuladas]")
+    st.write(f"- Atividades recentes relacionadas à FURIA: [Descrição de Atividades Simuladas]")
 
 if st.button("Enviar Dados"):
     dados = {
