@@ -13,8 +13,10 @@ atividades = st.text_area("Principais Atividades")
 eventos = st.text_area("Eventos de esports que você acompanhou ou participou no último ano")
 compras = st.text_area("Compras que foram feitas no último ano")
 
-st.subheader("Próximo Passo")
-st.info("upload de documentos.")
+st.subheader("Upload de Documento (Opcional)")
+documento = st.file_uploader("Faça o upload de um documento (ex: RG)")
+if documento is not None:
+    st.write("Documento carregado:", documento.name)
 
 if st.button("Enviar Dados"):
     dados = {
