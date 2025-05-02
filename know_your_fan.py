@@ -23,15 +23,40 @@ if documento is not None:
         st.success("Documento validado com sucesso (simulação)!")
 
 st.subheader("Vincular Redes Sociais (Simulação)")
-redes_sociais = ["Twitter", "Instagram", "Twitch"]
-rede_selecionada = st.selectbox("Selecione a rede social para vincular:", redes_sociais)
-if st.button(f"Simular Leitura de Dados do {rede_selecionada}"):
-    st.info(f"Simulando a leitura de interações, páginas seguidas e atividades relacionadas a esports da sua conta de {rede_selecionada}...")
-    # Aqui você poderia adicionar informações simuladas diferentes dependendo da rede selecionada.
-    st.write("Informações simuladas:")
-    st.write(f"- Número de interações recentes relacionadas à FURIA: [Número Aleatório]")
-    st.write(f"- Páginas de esports seguidas: [Lista de Páginas Simuladas]")
-    st.write(f"- Atividades recentes relacionadas à FURIA: [Descrição de Atividades Simuladas]")
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("🐦 Twitter"):
+        st.info("Simulando pedido de permissão para acessar dados do Twitter...")
+        st.write("Permissão concedida (simulação). Lendo dados...")
+        st.write("- Interações recentes com a FURIA: [Simulado]")
+        # Adicione aqui mais informações simuladas do Twitter
+with col2:
+    if st.button("📸 Instagram"):
+        st.info("Simulando pedido de permissão para acessar dados do Instagram...")
+        st.write("Permissão concedida (simulação). Lendo dados...")
+        st.write("- Páginas da FURIA seguidas: [Simulado]")
+        # Adicione aqui mais informações simuladas do Instagram
+with col3:
+    if st.button("🟣 Twitch"):
+        st.info("Simulando pedido de permissão para acessar dados do Twitch...")
+        st.write("Permissão concedida (simulação). Lendo dados...")
+        st.write("- Canais da FURIA seguidos: [Simulado]")
+        # Adicione aqui mais informações simuladas do Twitch
+
+st.subheader("Validar Links de Perfis da FURIA (Simulação)")
+link_perfil = st.text_input("Link do seu perfil no site FURIA:")
+if st.button("Simular Validação do Link"):
+    if link_perfil:
+        st.info(f"Simulando a análise do link: {link_perfil}...")
+        # Lógica de simulação para verificar
+        # se o link parece ser de um site da furia e se o
+        # conteúdo simulado é relevante para o perfil de um fã.
+        if "furia" in link_perfil.lower() or "cstrike" in link_perfil.lower():
+            st.success("Link validado! Conteúdo relevante para o perfil de um fã de FURIA.")
+        else:
+            st.warning("Link validado (simulação), mas o conteúdo pode não ser altamente relevante para a FURIA.")
+    else:
+        st.warning("Por favor, cole um link de perfil.")
 
 if st.button("Enviar Dados"):
     dados = {
