@@ -6,12 +6,21 @@ st.subheader("Informações Pessoais")
 nome = st.text_input("Nome Completo")
 endereco = st.text_area("Endereço")
 cpf = st.text_input("CPF")
+faixa_idade_opcoes = ["Menos de 18", "18-24", "25-34", "35-44", "45 anos ou mais"]
+idade = st.selectbox("Faixa de idade", faixa_idade_opcoes)
+genero_opcoes = ["Masculino", "Feminino", "Não binário", "Outro", "Prefiro não dizer"]
+genero = st.selectbox("Gênero", genero_opcoes)
 
 st.subheader("Interesses, Atividades, Eventos e Compras no último ano")
-interesses = st.text_area("Principais interesses")
-atividades = st.text_area("Principais Atividades")
-eventos = st.text_area("Eventos de esports que você acompanhou ou participou no último ano")
-compras = st.text_area("Compras que foram feitas no último ano")
+jogos_competitivos_opcoes = ["Counter-Strike", "League of Legends", "VALORANT", "Dota 2", "Rainbow Six Siege", "Rocket League", "Kings League", "Outros"]
+interesses = st.multiselect("Quais jogos do cenário competitivo você costuma acompanhar?", jogos_competitivos_opcoes)
+jogos_jogar_opcoes = ["Counter-Strike", "League of Legends", "VALORANT", "Dota 2", "Rainbow Six Siege", "Rocket League", "Kings League", "Outros"]
+atividades = st.multiselect("Quais jogos você costuma jogar?", jogos_jogar_opcoes)
+streamers = st.text_area("Quais streamers você acompanha?")
+eventos_opcoes = ["Sim, participei", "Sim, apenas assisti online", "Sim, participei e assisti online", "Não"]
+eventos = st.radio("Você acompanhou ou participou de eventos de esports no último ano?", eventos_opcoes)
+compras_opcoes = ["Sim, roupas e acessorios", "Sim, skins/bundle virtuais", "Sim, outros", "Não"]
+compras = st.multiselect("Você fez alguma compra relacionada a esports no ultimo ano?", compras_opcoes)
 
 st.subheader("Upload de Documento (Opcional)")
 documento = st.file_uploader("Faça o upload de um documento (ex: RG)")
@@ -23,7 +32,7 @@ if documento is not None:
         st.success("Documento validado com sucesso (simulação)!")
 
 st.subheader("Vincular Redes Sociais (Simulação)")
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     if st.button("🐦 Twitter"):
         st.info("Simulando pedido de permissão para acessar dados do Twitter...")
@@ -42,6 +51,12 @@ with col3:
         st.write("Permissão concedida (simulação). Lendo dados...")
         st.write("- Canais da FURIA seguidos: [Simulado]")
         # Adicione aqui mais informações simuladas do Twitch
+with col4:
+    if st.button("🎶 Tiktok"):
+        st.info("Simulando pedido de permissão para acessar dados do TikTok...")
+        st.write("Permissão concedida (simulação). Lendo dados...")
+        st.write("- Canais da FURIA seguidos: [Simulado]")
+        # Adicione aqui mais informações simuladas do TikTok
 
 st.subheader("Validar Links de Perfis da FURIA (Simulação)")
 link_perfil = st.text_input("Link do seu perfil no site FURIA:")
@@ -63,8 +78,11 @@ if st.button("Enviar Dados"):
         "Nome": nome,
         "Endereço": endereco,
         "CPF": cpf,
+        "Faixa de idade": idade,
+        "Gênero": genero,
         "Interesses": interesses,
         "Atividades": atividades,
+        "Streamers": streamers,
         "Eventos": eventos,
         "Compras": compras
     }
