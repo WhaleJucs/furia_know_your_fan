@@ -1,4 +1,5 @@
 import streamlit as st
+import re  # Importa a biblioteca de expressões regulares
 
 st.title("Know Your Fan - Coleta de Dados")
 
@@ -6,21 +7,28 @@ st.subheader("Informações Pessoais")
 nome = st.text_input("Nome Completo")
 endereco = st.text_area("Endereço")
 cpf = st.text_input("CPF")
-faixa_idade_opcoes = ["Menos de 18", "18-24", "25-34", "35-44", "45 anos ou mais"]
-idade = st.selectbox("Faixa de idade", faixa_idade_opcoes)
-genero_opcoes = ["Masculino", "Feminino", "Não binário", "Outro", "Prefiro não dizer"]
-genero = st.selectbox("Gênero", genero_opcoes)
+idade = st.selectbox("Faixa de idade", ["Menos de 18", "18-24", "25-34", "35-44", "45 anos ou mais"])
+genero = st.selectbox("Gênero", ["Masculino", "Feminino", "Não binário", "Outro", "Prefiro não dizer"])
+
+# Para manter o estado dos multiselects e radio buttons
+if "interesses" not in st.session_state:
+    st.session_state["interesses"] = []
+if "atividades" not in st.session_state:
+    st.session_state["atividades"] = []
+if "streamers" not in st.session_state:
+    st.session_state["streamers"] = []
+if "eventos" not in st.session_state:
+    st.session_state["eventos"] = ""
+if "compras" not in st.session_state:
+    st.session_state["compras"] = []
 
 st.subheader("Interesses, Atividades, Eventos e Compras no último ano")
 jogos_competitivos_opcoes = ["Counter-Strike", "League of Legends", "VALORANT", "Dota 2", "Rainbow Six Siege", "Rocket League", "Kings League", "Outros"]
 interesses = st.multiselect("Quais jogos do cenário competitivo você costuma acompanhar?", jogos_competitivos_opcoes)
-jogos_jogar_opcoes = ["Counter-Strike", "League of Legends", "VALORANT", "Dota 2", "Rainbow Six Siege", "Rocket League", "Kings League", "Outros"]
-atividades = st.multiselect("Quais jogos você costuma jogar?", jogos_jogar_opcoes)
+atividades = st.multiselect("Quais jogos você costuma jogar?", jogos_competitivos_opcoes)
 streamers = st.text_area("Quais streamers você acompanha?")
-eventos_opcoes = ["Sim, participei", "Sim, apenas assisti online", "Sim, participei e assisti online", "Não"]
-eventos = st.radio("Você acompanhou ou participou de eventos de esports no último ano?", eventos_opcoes)
-compras_opcoes = ["Sim, roupas e acessorios", "Sim, skins/bundle virtuais", "Sim, outros", "Não"]
-compras = st.multiselect("Você fez alguma compra relacionada a esports no ultimo ano?", compras_opcoes)
+eventos = st.radio("Você acompanhou ou participou de eventos de esports no último ano?", ["Sim, participei", "Sim, apenas assisti online", "Sim, participei e assisti online", "Não"])
+compras = st.multiselect("Você fez alguma compra relacionada a esports no ultimo ano?", ["Sim, roupas e acessorios", "Sim, skins/bundle virtuais", "Sim, outros", "Não"])
 
 st.subheader("Upload de Documento (Opcional)")
 documento = st.file_uploader("Faça o upload de um documento (ex: RG)")
@@ -74,18 +82,32 @@ if st.button("Simular Validação do Link"):
         st.warning("Por favor, cole um link de perfil.")
 
 if st.button("Enviar Dados"):
-    dados = {
-        "Nome": nome,
-        "Endereço": endereco,
-        "CPF": cpf,
-        "Faixa de idade": idade,
-        "Gênero": genero,
-        "Interesses": interesses,
-        "Atividades": atividades,
-        "Streamers": streamers,
-        "Eventos": eventos,
-        "Compras": compras
-    }
-    st.write("Dados Coletados:")
-    st.json(dados)
-    st.success("Coleta de dados bem sucedida!")
+    erros = []
+    if not nome:
+        erros.append("O nome é obrigatório.")
+    if not endereco:
+        erros.append("O endereço é obrigatório.")
+    if not cpf:
+        erros.append("O CPF é obrigatório.")
+    elif not re.match(r'^\d{11}$', cpf):
+        erros.append("O CPF deve conter 11 dígitos numéricos.")
+
+    if erros:
+        for erro in erros:
+            st.error(erro)
+    else:
+        dados = {
+            "Nome": nome,
+            "Endereço": endereco,
+            "CPF": cpf,
+            "Faixa de idade": idade,
+            "Gênero": genero,
+            "Interesses": st.session_state.get("interesses", []),
+            "Atividades": st.session_state.get("atividades", []),
+            "Streamers": st.session_state.get("streamers", []),
+            "Eventos": st.session_state.get("eventos", ""),
+            "Compras": st.session_state.get("compras", [])
+        }
+        st.write("Dados Coletados:")
+        st.json(dados)
+        st.success("Coleta de dados bem sucedida!")
